@@ -1,6 +1,5 @@
 from pynput import keyboard
 from pynput.keyboard import Controller
-import time
 
 # Table des accents
 accents = {
@@ -28,10 +27,13 @@ def reset_states():
 
 def handle_accent(letter):
     """Supprime la lettre précédente et insère la version accentuée."""
+    # Supprimer la lettre de base + accent précédent
     controller.press(keyboard.Key.backspace)
     controller.release(keyboard.Key.backspace)
     controller.press(keyboard.Key.backspace)
     controller.release(keyboard.Key.backspace)
+
+    # Insère la lettre accentuée
     accent = accents[letter][current_indices[letter]]
     controller.type(accent)
 
