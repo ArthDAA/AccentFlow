@@ -18,6 +18,7 @@ accents = {
 # États des lettres pour suivre les accents
 accent_states = {letter: 0 for letter in accents}
 active_letter = None
+accent_mode = False  # Désactivé par défaut
 
 
 def delete_previous_character():
@@ -38,10 +39,14 @@ def handle_accent(letter):
 
 
 def on_press(key):
-    global active_letter
+    global active_letter, accent_mode
 
     try:
-        if key.char in accents:
+        # Activer le mode accentuation avec Shift droit (F24)
+        if key == keyboard.Key.shift_r:
+            accent_mode = True
+
+        if accent_mode and key.char in accents:
             if key.char == active_letter:
                 # Supprimer la lettre précédente et ajouter un nouvel accent
                 delete_previous_character()
@@ -58,8 +63,12 @@ def on_press(key):
 
 
 def on_release(key):
-    """Réinitialise la lettre active si nécessaire."""
-    global active_letter
+    global active_letter, accent_mode
+
+    # Désactiver le mode accentuation lorsque Shift droit est relâché
+    if key == keyboard.Key.shift_r:
+        accent_mode = False
+
     if key == keyboard.Key.esc:  # Escape pour quitter proprement
         return False
 
