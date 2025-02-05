@@ -1,6 +1,9 @@
 from pynput import keyboard
 from pynput.keyboard import Controller
 
+# Initialisation du contrôleur
+controller = Controller()
+
 # Table des accents
 accents = {
     'e': ['é', 'è', 'ê', 'ë'],
@@ -12,58 +15,55 @@ accents = {
     'c': ['ç']
 }
 
-# État des lettres (initialement à 0)
-letter_states = {letter: 0 for letter in accents}
-current_indices = {letter: 0 for letter in accents}
-
-controller = Controller()
+# États des lettres pour suivre les accents
+accent_states = {letter: 0 for letter in accents}
+active_letter = None
 
 
-def reset_states():
-    """Remet tous les états de lettre à 0."""
-    for letter in letter_states:
-        letter_states[letter] = 0
+def delete_previous_character():
+    """Supprime la lettre précédente."""
+    controller.press(keyboard.Key.backspace)
+    controller.release(keyboard.Key.backspace)
+    controller.press(keyboard.Key.backspace)
+    controller.release(keyboard.Key.backspace)
 
 
 def handle_accent(letter):
-    """Supprime la lettre précédente et insère la version accentuée."""
-    # Supprimer la lettre de base + accent précédent
-    controller.press(keyboard.Key.backspace)
-    controller.release(keyboard.Key.backspace)
-    controller.press(keyboard.Key.backspace)
-    controller.release(keyboard.Key.backspace)
+    """Insère la lettre accentuée et met à jour l'état."""
+    accented_char = accents[letter][accent_states[letter]]
+    controller.type(accented_char)
 
-    # Insère la lettre accentuée
-    accent = accents[letter][current_indices[letter]]
-    controller.type(accent)
+    # Passe à l'accent suivant
+    accent_states[letter] = (accent_states[letter] + 1) % len(accents[letter])
 
 
 def on_press(key):
+    global active_letter
+
     try:
-        # Vérifie si c'est une lettre avec accents possibles
-        if hasattr(key, 'char') and key.char in accents:
-            letter = key.char
-
-            # Si la lettre est déjà active, change l'accent
-            if letter_states[letter] == 1:
-                current_indices[letter] = (current_indices[letter] + 1) % len(accents[letter])
-                handle_accent(letter)
+        if key.char in accents:
+            if key.char == active_letter:
+                # Supprimer la lettre précédente et ajouter un nouvel accent
+                delete_previous_character()
+                handle_accent(active_letter)
             else:
-                # Activer cette lettre, désactiver les autres
-                reset_states()
-                letter_states[letter] = 1
-                current_indices[letter] = 0
-
-    except Exception as e:
-        print(f"Erreur : {e}")
+                # Nouvelle lettre, réinitialiser l'état
+                controller.press(keyboard.Key.backspace)
+                controller.release(keyboard.Key.backspace)
+                active_letter = key.char
+                accent_states[active_letter] = 0
+                handle_accent(active_letter)
+    except (AttributeError, TypeError):
+        pass
 
 
 def on_release(key):
-    # Permet de quitter avec la touche ESC
-    if key == keyboard.Key.esc:
+    """Réinitialise la lettre active si nécessaire."""
+    global active_letter
+    if key == keyboard.Key.esc:  # Escape pour quitter proprement
         return False
 
 
-# Écoute du clavier
+# Lancer l'écoute
 with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
