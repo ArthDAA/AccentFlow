@@ -13,19 +13,14 @@ accents = {
 
 current_letter = None
 current_index = 0
-special_mode = False
 
 
 def on_press(key):
-    global current_letter, current_index, special_mode
+    global current_letter, current_index
 
     try:
-        if key == keyboard.Key.shift_r:
-            special_mode = True
-            print("[Mode accents activé]")
-        
-        # Gérer les lettres
-        if special_mode and hasattr(key, 'char') and key.char in accents:
+        # Gérer les lettres directement
+        if hasattr(key, 'char') and key.char in accents:
             current_letter = key.char
             print(f"Accent sélectionné : {accents[current_letter][current_index]}")
 
@@ -34,14 +29,10 @@ def on_press(key):
 
 
 def on_release(key):
-    global current_letter, current_index, special_mode
-
-    if key == keyboard.Key.f24:
-        special_mode = False
-        print("[Mode accents désactivé]")
+    global current_letter, current_index
 
     # Gérer la rotation des accents
-    if special_mode and current_letter:
+    if current_letter:
         current_index = (current_index + 1) % len(accents[current_letter])
         print(f"Prochain accent : {accents[current_letter][current_index]}")
 
