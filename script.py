@@ -14,29 +14,21 @@ accents = {
 current_letter = None
 current_index = 0
 
-
 def on_press(key):
     global current_letter, current_index
-
     try:
-        # Gérer les lettres directement
         if hasattr(key, 'char') and key.char in accents:
             current_letter = key.char
-            print(f"Accent sélectionné : {accents[current_letter][current_index]}")
-
+            print(f"\r{accents[current_letter][current_index]}", end="")
     except AttributeError:
         pass
 
-
 def on_release(key):
     global current_letter, current_index
-
-    # Gérer la rotation des accents
     if current_letter:
         current_index = (current_index + 1) % len(accents[current_letter])
-        print(f"Prochain accent : {accents[current_letter][current_index]}")
-
 
 # Démarrage de l'écoute clavier
+print("[Accents activés — utilisez dans n'importe quelle application.]")
 with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
