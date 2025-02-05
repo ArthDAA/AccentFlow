@@ -1,0 +1,84 @@
+#DEFINE Touche_fn = F24
+
+Si "Touche_fn" presse? Alors
+{
+	Tant que "Etat Touche_fn presse" = 1? Alors
+	{
+		int a = NULL;
+		int b = NULL;
+		int max = NULL;
+		int i = 0;
+		int lettre[a][b];
+		Si "e" presse? Alors
+		{
+			#DEFINE "Lettre_ref" = "e";
+			max = 3;
+			a = 0;
+		}
+		Si "a" presse? Alors
+		{
+			#DEFINE "Lettre_ref" = "a"; 
+			max = 2;
+			a = 1;
+		}
+		Si "i" presse? Alors
+		{
+			#DEFINE "Lettre_ref" = "i";
+			max = 1;
+			a = 2;
+		}
+		Si "o" presse? Alors
+		{
+			#DEFINE "Lettre_ref" = "o";
+			max = 1;
+			a = 3;
+		}
+		Si "u" presse? Alors
+		{
+			#DEFINE "Lettre_ref" = "u";
+			max = 2;
+			a = 4;
+		}
+		Si "y" presse? Alors
+		{
+			#DEFINE "Lettre_ref" = "y";
+			max = a = 5;
+		}
+		Si "c" presse? Alors
+		{
+			#DEFINE "Lettre_ref" = "c";
+			max = 0;
+			a = 6;
+		}
+		Si "Lettre_ref" presse? Alors
+		{
+			b = i;
+			output ref[a][b];
+			Si "Lettre_ref" relache? Alors
+			{
+				i++;
+				Si i > max? Alors
+					i = 0;
+			}
+		}
+	}
+}
+
+
+Table des caracteres;
+[0][0] = é
+[0][1] = è
+[0][2] = ê
+[0][3] = ë
+[1][0] = à
+[1][1] = â
+[1][2] = ä
+[2][0] = î
+[2][1] = ï
+[3][0] = ô
+[3][1] = ö
+[4][0] = ù
+[4][1] = û
+[4][2] = ü
+[5][0] = ÿ
+[6][0] = ç
