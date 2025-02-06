@@ -18,7 +18,7 @@ accents = {
 # États des lettres pour suivre les accents
 accent_states = {letter: 0 for letter in accents}
 active_letter = None
-accent_mode = False  # Désactivé par défaut
+accent_mode = False  # Mode accentuation désactivé par défaut
 
 
 def delete_previous_character():
@@ -33,7 +33,6 @@ def handle_accent(letter):
     """Insère la lettre accentuée et met à jour l'état."""
     accented_char = accents[letter][accent_states[letter]]
     controller.type(accented_char)
-
     # Passe à l'accent suivant
     accent_states[letter] = (accent_states[letter] + 1) % len(accents[letter])
 
@@ -42,9 +41,10 @@ def on_press(key):
     global active_letter, accent_mode
 
     try:
-        # Activer le mode accentuation avec Shift droit (F24)
+        # Activer/Désactiver le mode accentuation avec Shift_R
         if key == keyboard.Key.shift_r:
-            accent_mode = True
+            accent_mode = not accent_mode
+            print("Mode accentuation activé" if accent_mode else "Mode accentuation désactivé")
 
         if accent_mode and key.char in accents:
             if key.char == active_letter:
@@ -63,12 +63,7 @@ def on_press(key):
 
 
 def on_release(key):
-    global active_letter, accent_mode
-
-    # Désactiver le mode accentuation lorsque Shift droit est relâché
-    if key == keyboard.Key.shift_r:
-        accent_mode = False
-
+    """Réinitialise la lettre active si nécessaire."""
     if key == keyboard.Key.esc:  # Escape pour quitter proprement
         return False
 
