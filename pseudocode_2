@@ -1,0 +1,14 @@
+Lire entrees
+int lettre_pressee = '\0'
+Si "touche_clavier" pressee? Alors
+{
+	ecrire "\b"
+	Si lettre_pressee != touche_clavier? Alors
+	{
+		lettre_pressee = touche_clavier
+	}
+	Sinon
+	{
+		ecrire "\b"
+	}
+}
