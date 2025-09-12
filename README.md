@@ -31,9 +31,9 @@ sans changer de clavier, sans installer 15 layouts différents.
 
 ## 📌 Roadmap
 
-- [x] Démo fonctionnelle (web)  
-- [ ] Implémentation en extension navigateur  
-- [ ] Portage natif français (Windows/Linux/macOS)
+- [x] Démo fonctionnelle (web)
+- [ ] Prototype en Python ou en C
+- [ ] Fichier d'installation
 - [ ] Ajout au niveau kernel afin qu'il marche à tous les niveaux
 - [ ] Ajout de .altrc, permettant de le configurer manuellement  
 
