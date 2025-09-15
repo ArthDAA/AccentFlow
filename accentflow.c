@@ -471,7 +471,8 @@ int main() {
     
     endwin();
     return 0;
-}#include <ncurses.h>
+}
+#include <ncurses.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
