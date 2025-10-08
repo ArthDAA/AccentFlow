@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AccentFlow",
-  "version": "1.0.0",
+  "version": "Alpha 0.1",
   "description": "Système d'accents cycliques universel - Alt + lettre pour accents",
   "permissions": ["activeTab"],
   "content_scripts": [
